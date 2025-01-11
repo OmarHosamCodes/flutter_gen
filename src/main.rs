@@ -45,10 +45,23 @@ fn main() -> Result<()> {
             .prompt()?,
     };
 
+    //Get package name
+    let package_name = Text::new("What is your package name?")
+        .with_default("com.example.my_flutter_app")
+        .prompt()?;
+
     // Create Flutter project
     println!("{}", "Creating Flutter project...".green());
     Command::new("flutter")
-        .args(["create", &project_name])
+        .args([
+            "create",
+            &project_name,
+            "--org",
+            &package_name,
+            "--platforms",
+            "android,ios",
+            "--no-pub",
+        ])
         .status()?;
 
     // Get features from user input
@@ -65,7 +78,7 @@ fn main() -> Result<()> {
             println!("{}", "Adding auth-related features...".green());
             features.push(Feature::new("login"));
             features.push(Feature::new("register"));
-            features.push(Feature::new("forgot-password"));
+            features.push(Feature::new("forgot_password"));
         } else {
             features.push(Feature::new(&feature_name));
         }
